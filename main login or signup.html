@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <title>صفحه ورود</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Gradient background */
+        body {
+            height: 100vh;
+            margin: 0;
+            background-size: cover;
+            background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Center the login form */
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        /* Make form fields take up full width */
+        .form-control {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h4 class="text-center">ورود به سیستم</h4>
+                <form>
+                    <div class="form-group">
+                        <label for="userType">نوع کاربر</label>
+                        <select class="form-control" id="userType">
+                            <option>منشی</option>
+                            <option>بیمار</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">آدرس ایمیل</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ایمیل خود را وارد کنید">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">رمز عبور</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="رمز عبور">
+                    </div>
+                    <button type="submit" class="btn btn-primary d-block mx-auto">ورود</button>
+                </form>
+                <p class="text-center">اگر حساب کاربری ندارید، <a href="signup.html">ثبت نام کنید</a>.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+    // Prevent the form from being submitted normally
+    event.preventDefault();
+
+    // Get form data
+    var userType = document.getElementById('userType').value;
+    var email = document.getElementById('exampleInputEmail1').value;
+    var password = document.getElementById('exampleInputPassword1').value;
+
+    // Create a new FormData object
+    var formData = new FormData();
+    formData.append('userType', userType);
+    formData.append('email', email);
+    formData.append('password', password);
+
+    // Send a POST request to your Django backend
+    fetch('/your_django_view/', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response data here
+        if (data.success) {
+            // If login was successful, show a success message
+            alert('با موفقیت وارد شدید');
+            // Then redirect to the dashboard
+            window.location.href = '/dashboard/';
+        } else {
+            // If login failed, show an error message
+            alert('کاربری با این مشخصات یافت نشد');
+        }
+    })
+    .catch(error => {
+        // Handle the error here
+        console.error('Error:', error);
+    });
+});
+
+    </script>
+    <script>
+        // Get the user type select element
+var userTypeSelect = document.getElementById('userType');
+
+// Get the signup link element
+var signupLink = document.querySelector('a[href="signup.html"]');
+
+// Add an event listener for the change event
+userTypeSelect.addEventListener('change', function() {
+    // Check the selected user type and update the signup link
+    if (userTypeSelect.value === 'بیمار') {
+        signupLink.href = 'patient_signup.html';
+    } else if (userTypeSelect.value === 'منشی') {
+        signupLink.href = 'secretary_signup.html';
+    }
+});
+    </script>
+</body>
+</html>
