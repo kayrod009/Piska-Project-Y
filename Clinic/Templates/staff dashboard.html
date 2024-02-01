@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <title>داشبورد کارکنان</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Your CSS styles */
+        body {
+            height: 100vh;
+            margin: 0;
+            background-size: cover;
+            background-image: linear-gradient(to right, rgba(79, 172, 254, 0.5), rgba(0, 242, 254, 0.5));
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            padding-top: 20px;
+            flex: 1 0 auto;
+        }
+        .footer {
+            flex-shrink: 0;
+        }
+        /* Your other styles */
+    </style>
+</head>
+<body dir="rtl">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">داشبورد</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">نوبت‌های اخذ شده</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">لغو نوبت‌ها</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">افزایش ظرفیت کلینیک</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">خروج از حساب کاربری</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#userInfoModal">اطلاعات کاربری</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container content">
+        <div class="accordion" id="dashboardAccordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne">
+                            نوبت‌های اخذ شده
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#dashboardAccordion">
+                    <div class="card-body">
+                        <p>
+                         جهت مشاهده نوبت‌های اخذ شده بیماران در سامانه از این گزینه استفاده کنید.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo">
+                            لغو نوبت
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#dashboardAccordion">
+                    <div class="card-body">
+                        <p>
+                            جهت لغو نوبت بیماران از منو این گزینه را انتخاب کنید.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingThree">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree">
+                            افزایش ظرفیت کلینیک
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#dashboardAccordion">
+                    <div class="card-body">
+                        <p>
+                           جهت افزایش ظرفیت نوبت‌دهی کلینیک با هماهنگی قبلی مافوق خود از این گزینه استفاده کنید.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingFour">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour">
+                            خروج از حساب کاربری
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#dashboardAccordion">
+                    <div class="card-body">
+                        <p>
+                            جهت خروج از حساب کاربری خود از این گزینه استفاده کنید. در نظر داشته باشید که تغییرات ایجاد شده توسط شما ذخیره خواهند شد.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingFive">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFive">
+                            اطلاعات کاربری
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#dashboardAccordion">
+                    <div class="card-body">
+                        <p>
+                            اطلاعات کاربری شما از طریق این گزینه نمایش داده خواهند شد.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+            <!-- Add more cards for other functionalities -->
+        </div>
+    </div>
+
+        <!-- User Info Modal -->
+    <div class="modal fade" id="userInfoModal" tabindex="-1" role="dialog" aria-labelledby="userInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userInfoModalLabel">اطلاعات کاربری</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- User info will be inserted here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted">پیسکا کلینیک</span>
+            <p class="mb-1">تهران، خیابان آزادی، دانشگاه صنعتی شریف</p>
+            <p class="mb-0">Email: piskaclinic@sharif.edu | Phone: 6666-6666</p>
+        </div>
+    </footer>
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#userInfoModal').on('show.bs.modal', function (event) {
+                // Fetch user info from your Django backend
+                fetch('/your_django_view/', {
+                    method: 'GET',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Insert user info into the modal body
+                    $('.modal-body').text(JSON.stringify(data));
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+        </script>
+</body>
+</html>
