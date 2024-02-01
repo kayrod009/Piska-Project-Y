@@ -21,3 +21,9 @@ class Staff(models.Model):
 class Doctors(models.Model):
     name = models.CharField(max_length=300)
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
+
+class Appointment(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE)
+    clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
+    status = models.IntegerField()
