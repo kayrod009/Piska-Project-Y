@@ -54,21 +54,54 @@
     <div class="container content">
         <div class="accordion" id="dashboardAccordion">
             <div class="card">
-                <div class="card-header" id="headingOne">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne">
-                            نوبت‌های اخذ شده
-                        </button>
-                    </h2>
-                </div>
-                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#dashboardAccordion">
-                    <div class="card-body">
-                        <p>
-                         جهت مشاهده نوبت‌های اخذ شده بیماران در سامانه از این گزینه استفاده کنید.
-                        </p>
-                    </div>
-                </div>
+    <div class="card-header" id="headingBookedAppointments">
+        <h2 class="mb-0">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseBookedAppointments" aria-expanded="false" aria-controls="collapseBookedAppointments">
+                Booked Appointments
+            </button>
+        </h2>
+    </div>
+    <div id="collapseBookedAppointments" class="collapse" aria-labelledby="headingBookedAppointments" data-parent="#dashboardAccordion">
+        <div class="card-body">
+            <!-- Insert the appointments table HTML snippet here -->
+            <div class="container">
+                <h2>Appointments at {{ staff_member.clinic.name }}</h2>
+                {% if appointments %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Clinic</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in appointments %}
+                                <tr>
+                                    <td>{{ appointment.patient.username }}</td>
+                                    <td>{{ appointment.doctor.name }}</td>
+                                    <td>{{ appointment.clinic.name }}</td>
+                                    <td>
+                                        {% if appointment.status == 0 %}
+                                            Completed
+                                        {% elif appointment.status == 1 %}
+                                            In Action
+                                        {% else %}
+                                            Unknown
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No appointments found for this clinic.</p>
+                {% endif %}
             </div>
+        </div>
+    </div>
+</div>
             <div class="card">
                 <div class="card-header" id="headingTwo">
                     <h2 class="mb-0">
@@ -78,12 +111,26 @@
                     </h2>
                 </div>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#dashboardAccordion">
-                    <div class="card-body">
-                        <p>
-                            جهت لغو نوبت بیماران از منو این گزینه را انتخاب کنید.
-                        </p>
-                    </div>
-                </div>
+    <div class="card-body">
+        <h3>لغو نوبت</h3>
+        {% if appointments %}
+            <ul>
+                {% for appointment in appointments %}
+                    <li>
+                        Appointment with {{ appointment.patient.username }} - {{ appointment.doctor.name }} at {{ appointment.clinic.name }}
+                        <!-- Cancel Appointment Form -->
+                        <form action="{% url 'cancel_appointment' appointment.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No appointments to display.</p>
+        {% endif %}
+    </div>
+</div>
             </div>
             <div class="card">
                 <div class="card-header" id="headingThree">
@@ -94,12 +141,17 @@
                     </h2>
                 </div>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#dashboardAccordion">
-                    <div class="card-body">
-                        <p>
-                           جهت افزایش ظرفیت نوبت‌دهی کلینیک با هماهنگی قبلی مافوق خود از این گزینه استفاده کنید.
-                        </p>
-                    </div>
-                </div>
+    <div class="card-body">
+        <form action="{% url 'increase_clinic_capacity' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="additionalCapacity">میزان افزایش ظرفیت</label>
+                <input type="number" class="form-control" id="additionalCapacity" name="additionalCapacity" placeholder="تعداد را وارد کنید" required>
+            </div>
+            <button type="submit" class="btn btn-primary">افزایش ظرفیت</button>
+        </form>
+    </div>
+</div>
             </div>
             <div class="card">
                 <div class="card-header" id="headingFour">
@@ -135,7 +187,7 @@
             </div>
         </div>
     </div>
-    
+
             <!-- Add more cards for other functionalities -->
         </div>
     </div>
@@ -159,7 +211,8 @@
             </div>
         </div>
     </div>
-    
+    <a href="{% url 'logout' %}" class = "btn btn-primary">Log Out</a>
+    <a href="{% url 'staff_dashboard' %}" class = "btn btn-primary">Go to Dashboard</a>
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container">
             <span class="text-muted">پیسکا کلینیک</span>
