@@ -18,6 +18,8 @@ class Staff(models.Model):
     email = models.EmailField(max_length=264)
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
 
+
+
 class Doctors(models.Model):
     name = models.CharField(max_length=300)
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)

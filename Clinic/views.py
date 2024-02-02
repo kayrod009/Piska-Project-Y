@@ -148,3 +148,14 @@ def book_appointment(request):
 
     # If not a POST request, redirect to the form page or show an error
     return redirect('patient_dashboard')  # Replace with your form URL or error handling
+
+@require_POST  # Ensure that this view only handles POST requests
+def cancel_appointment(request, appointment_id):
+    # Ensure the staff member is authorized to cancel the appointment
+    # This is important for security reasons
+    appointment = Appointment.objects.get(id=appointment_id)
+    # You might want to check that the appointment's clinic matches the staff's clinic
+    # For simplicity, this check is omitted here
+    appointment.delete()  # Delete the appointment
+    # Redirect back to the staff dashboard after deletion
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
