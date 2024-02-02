@@ -61,70 +61,33 @@
                     </div>
                     <button type="submit" class="btn btn-primary d-block mx-auto">ورود</button>
                 </form>
-                <p class="text-center">اگر حساب کاربری ندارید، <a href="signup.html">ثبت نام کنید</a>.</p>
+                <p class="text-center">اگر حساب کاربری ندارید،
+    <a href="{% url 'patient_signup' %}" id="patientSignupLink" style="display: none;">ثبت نام کنید (بیمار)</a>
+    <a href="{% url 'staff_signup' %}" id="staffSignupLink" style="display: none;">ثبت نام کنید (منشی)</a>
+</p>
             </div>
         </div>
     </div>
-    <!-- Include Bootstrap JS and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script>
-        document.querySelector('form').addEventListener('submit', function(event) {
-    // Prevent the form from being submitted normally
-    event.preventDefault();
-
-    // Get form data
+<script>
+    function updateSignupLinkDisplay() {
     var userType = document.getElementById('userType').value;
-    var email = document.getElementById('exampleInputEmail1').value;
-    var password = document.getElementById('exampleInputPassword1').value;
+    var patientSignupLink = document.getElementById('patientSignupLink');
+    var staffSignupLink = document.getElementById('staffSignupLink');
 
-    // Create a new FormData object
-    var formData = new FormData();
-    formData.append('userType', userType);
-    formData.append('email', email);
-    formData.append('password', password);
-
-    // Send a POST request to your Django backend
-    fetch('/your_django_view/', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Handle the response data here
-        if (data.success) {
-            // If login was successful, show a success message
-            alert('با موفقیت وارد شدید');
-            // Then redirect to the dashboard
-            window.location.href = '/dashboard/';
-        } else {
-            // If login failed, show an error message
-            alert('کاربری با این مشخصات یافت نشد');
-        }
-    })
-    .catch(error => {
-        // Handle the error here
-        console.error('Error:', error);
-    });
-});
-
-    </script>
-    <script>
-        // Get the user type select element
-var userTypeSelect = document.getElementById('userType');
-
-// Get the signup link element
-var signupLink = document.querySelector('a[href="signup.html"]');
-
-// Add an event listener for the change event
-userTypeSelect.addEventListener('change', function() {
-    // Check the selected user type and update the signup link
-    if (userTypeSelect.value === 'بیمار') {
-        signupLink.href = 'patient_signup.html';
-    } else if (userTypeSelect.value === 'منشی') {
-        signupLink.href = 'secretary_signup.html';
+    if (userType === 'بیمار') {
+        patientSignupLink.style.display = 'inline';  // Show patient signup link
+        staffSignupLink.style.display = 'none';      // Hide staff signup link
+    } else if (userType === 'منشی') {
+        patientSignupLink.style.display = 'none';    // Hide patient signup link
+        staffSignupLink.style.display = 'inline';    // Show staff signup link
     }
-});
-    </script>
+}
+
+// Call updateSignupLinkDisplay when the page loads
+document.addEventListener('DOMContentLoaded', updateSignupLinkDisplay);
+
+// Update the display whenever the user type selection changes
+document.getElementById('userType').addEventListener('change', updateSignupLinkDisplay);
+</script>
 </body>
 </html>

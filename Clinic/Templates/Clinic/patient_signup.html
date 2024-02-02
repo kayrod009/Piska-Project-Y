@@ -37,65 +37,22 @@
 <body>
     <div class="container">
         <h4 class="text-center">ثبت نام کاربران</h4>
-        <form>
+        <form method="POST" action="{% url 'process_patient_signup' %}">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="username">نام کاربری</label>
-                <input type="text" class="form-control" id="username" placeholder="نام کاربری خود را وارد کنید">
+                <input type="text" class="form-control" id="username" name="username" placeholder="نام کاربری خود را وارد کنید">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">آدرس ایمیل</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ایمیل خود را وارد کنید">
+                <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="ایمیل خود را وارد کنید">
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">رمز عبور</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="رمز عبور">
+                <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="رمز عبور">
             </div>
             <button type="submit" class="btn btn-primary d-block mx-auto">ثبت نام</button>
         </form>
     </div>
-    <!-- Include Bootstrap JS and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script>
-        document.querySelector('form').addEventListener('submit', function(event) {
-       // Prevent the form from being submitted normally
-       event.preventDefault();
-
-       // Get form data
-       var username = document.getElementById('username').value;
-       var email = document.getElementById('exampleInputEmail1').value;
-       var password = document.getElementById('exampleInputPassword1').value;
-
-       // Create a new FormData object
-       var formData = new FormData();
-       formData.append('username', username);
-       formData.append('email', email);
-       formData.append('password', password);
-
-       // Send a POST request to your Django backend
-       fetch('/your_django_view/', {
-           method: 'POST',
-           body: formData
-       })
-       .then(response => response.json())
-       .then(data => {
-           // Handle the response data here
-           if (data.success) {
-               // If registration was successful, show a success message
-               alert('ثبت نام با موفقیت انجام شد');
-               // Then redirect to the login page
-               // login must be changed
-               window.location.href = '/login/';
-           } else {
-               // If registration failed, show an error message
-               alert('ثبت نام ناموفق بود: ' + data.message);
-           }
-       })
-       .catch(error => {
-           // Handle the error here
-           console.error('Error:', error);
-       });
-   });
-   </script>
 </body>
 </html>
