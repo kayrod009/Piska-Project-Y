@@ -101,6 +101,7 @@ def patient_dashboard_view(request):
     }
     return render(request, 'Clinic/patient_dashboard.html', context)
 
+
 def logout_view(request):
     logout(request)
     # Redirect to a success page, such as the home page or the login page
@@ -149,6 +150,7 @@ def book_appointment(request):
     # If not a POST request, redirect to the form page or show an error
     return redirect('patient_dashboard')  # Replace with your form URL or error handling
 
+
 @require_POST  # Ensure that this view only handles POST requests
 def cancel_appointment(request, appointment_id):
     # Ensure the staff member is authorized to cancel the appointment
@@ -159,3 +161,20 @@ def cancel_appointment(request, appointment_id):
     appointment.delete()  # Delete the appointment
     # Redirect back to the staff dashboard after deletion
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@require_POST
+@login_required
+def increase_clinic_capacity(request):
+    if request.method == 'POST':
+        additional_capacity = int(request.POST.get('additionalCapacity', 0))
+        staff_member = Staff.objects.get(user=request.user)  # Adjust the query as per your user-staff relationship
+        clinic = staff_member.clinic
+        clinic.capacity += additional_capacity
+        clinic.save()
+
+        # Redirect back to the staff dashboard with a success message
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    else:
+        # Redirect back if not a POST request or in case of an error
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
