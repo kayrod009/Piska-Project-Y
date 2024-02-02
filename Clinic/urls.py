@@ -13,5 +13,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('search/', views.search_clinics_doctors, name='search_clinics_doctors'),
     path('book_appointment/', views.book_appointment, name='book_appointment'),
+    path('cancel_appointment/<int:appointment_id>/', views.cancel_appointment, name='cancel_appointment'),
+    path('increase_clinic_capacity/', views.increase_clinic_capacity, name='increase_clinic_capacity'),
     # Other URLs...
 ]
