@@ -54,53 +54,125 @@
     <div class="container content">
         <div class="accordion" id="dashboardAccordion">
             <div class="card">
-                <div class="card-header" id="headingOne">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne">
-                            سوابق اخذ نوبت
-                        </button>
-                    </h2>
-                </div>
-                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#dashboardAccordion">
-                    <div class="card-body">
-                        <p>
-                            جهت مشاهده سوابق اخذ نوبت خود ،از منوی سایت این گزینه را انتخاب کرده و تاریخچه نوبت‌گیری خود را مشاهده کنید.
-                        </p>
-                    </div>
-                </div>
+                <div class="card-header" id="headingCompletedAppointments">
+            <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseCompletedAppointments" aria-expanded="false" aria-controls="collapseCompletedAppointments">
+                    سوابق اخذ نوبت
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseCompletedAppointments" class="collapse" aria-labelledby="headingCompletedAppointments" data-parent="#dashboardAccordion">
+            <div class="card-body">
+                <h3>سوابق اخذ نوبت</h3>
+                {% if completed_appointments %}
+                    <ul>
+                        {% for appointment in completed_appointments %}
+                            <li>Appointment with Dr. {{ appointment.doctor.name }} at {{ appointment.clinic.name }} - Status: {% if appointment.status == 0 %}Completed{% endif %}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>شما هیچ نوبت کامل شده‌ای ندارید.</p>
+                {% endif %}
+            </div>
+        </div>
             </div>
             <div class="card">
-                <div class="card-header" id="headingTwo">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo">
-                            نوبت‌های فعال
-                        </button>
-                    </h2>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#dashboardAccordion">
-                    <div class="card-body">
-                        <p>
-                            جهت مشاهده نوبت‌های فعال خود ،از منوی سایت این گزینه را انتخاب کرده و نوبت‌های اخذ شده که هنوز منقضی نشدند را مشاهده کنید.
-                        </p>
-                    </div>
-                </div>
+                 <div class="card-header" id="headingActiveAppointments">
+            <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseActiveAppointments" aria-expanded="true" aria-controls="collapseActiveAppointments">
+                    نوبت‌های فعال
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseActiveAppointments" class="collapse" aria-labelledby="headingActiveAppointments" data-parent="#dashboardAccordion">
+            <div class="card-body">
+                <h3>نوبت‌های فعال</h3>
+                {% if in_action_appointments %}
+                    <ul>
+                        {% for appointment in in_action_appointments %}
+                            <li>Appointment with Dr. {{ appointment.doctor.name }} at {{ appointment.clinic.name }} - Status: {% if appointment.status == 1 %}In Action{% else %}Completed{% endif %}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>شما هیچ نوبت فعالی ندارید.</p>
+                {% endif %}
+            </div>
+        </div>
             </div>
             <div class="card">
-                <div class="card-header" id="headingThree">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree">
-                            اخذ نوبت جدید
-                        </button>
-                    </h2>
+    <div class="card-header" id="headingNewAppointment">
+        <h2 class="mb-0">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseNewAppointment">
+                اخذ نوبت جدید
+            </button>
+        </h2>
+    </div>
+    <div id="collapseNewAppointment" class="collapse" aria-labelledby="headingNewAppointment" data-parent="#dashboardAccordion">
+        <div class="card-body">
+            <!-- Search Form -->
+            <form method="GET" action="{% url 'search_clinics_doctors' %}">
+                <div class="form-group">
+                    <label for="searchKey">جستجو برای کلینیک یا پزشک:</label>
+                    <input type="text" class="form-control" id="searchKey" name="searchKey" placeholder="نام کلینیک یا پزشک را وارد کنید">
                 </div>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#dashboardAccordion">
-                    <div class="card-body">
-                        <p>
-                            جهت اخذ نوبت پزشک از این گزینه در منو استفاده کنید تا نوبت‌های آزاد را مشاهده کنید.
-                        </p>
-                    </div>
+                <button type="submit" class="btn btn-primary">جستجو</button>
+            </form>
+
+            <!-- Conditional Block for Displaying Search Results and Booking Form -->
+            {% if search_results %}
+                <div class="search-results mt-4">
+                    <h4>نتایج جستجو:</h4>
+                    <!-- Display Clinics -->
+                    <h5>کلینیک‌ها:</h5>
+                    {% for clinic in clinics %}
+                        <p>{{ clinic.name }} - ظرفیت باقیمانده: {{ clinic.capacity }}</p>
+                    {% empty %}
+                        <p>کلینیکی یافت نشد.</p>
+                    {% endfor %}
+
+                    <!-- Display Doctors -->
+                    <h5>پزشکان:</h5>
+                    {% for doctor in doctors %}
+                        <p>{{ doctor.name }} - کلینیک: {{ doctor.clinic.name }}</p>
+                    {% empty %}
+                        <p>پزشکی یافت نشد.</p>
+                    {% endfor %}
+
+                    <!-- Booking Form -->
+                    <h3>رزرو نوبت</h3>
+                    <form action="{% url 'book_appointment' %}" method="post">
+                        {% csrf_token %}
+
+                        <!-- Select Clinic -->
+                        <div class="form-group">
+                            <label for="clinic">انتخاب کلینیک:</label>
+                            <select id="clinic" name="clinic" class="form-control" required>
+                                {% for clinic in clinics %}
+                                    <option value="{{ clinic.id }}">{{ clinic.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Select Doctor -->
+                        <div class="form-group">
+                            <label for="doctor">انتخاب پزشک:</label>
+                            <select id="doctor" name="doctor" class="form-control" required>
+                                {% for doctor in doctors %}
+                                    <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-success">رزرو نوبت</button>
+                    </form>
                 </div>
-            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
             <div class="card">
                 <div class="card-header" id="headingFour">
                     <h2 class="mb-0">
@@ -159,7 +231,8 @@
             </div>
         </div>
     </div>
-    
+    <a href="{% url 'logout' %}" class = "btn btn-primary">Log Out</a>
+    <a href="{% url 'patient_dashboard' %}" class = "btn btn-primary">Go to Dashboard</a>
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container">
             <span class="text-muted">پیسکا کلینیک</span>
